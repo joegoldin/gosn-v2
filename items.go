@@ -559,6 +559,8 @@ func (di *DecryptedItems) Parse() (p Items, err error) {
 			pi = parseExtensionRepo(i)
 		case "SN|FileSafe|Credentials":
 			pi = parseFileSafeCredentials(i)
+		case "SN|File":
+			pi = parseFile(i)
 		default:
 			return nil, fmt.Errorf("unhandled type '%s'", i.ContentType)
 		}
