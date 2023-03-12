@@ -513,6 +513,8 @@ func ParseItem(di DecryptedItem) (p Item, err error) {
 		pi = parseExtensionRepo(di)
 	case "SN|FileSafe|Credentials":
 		pi = parseFileSafeCredentials(di)
+	case "SN|File":
+		pi = parseFile(di)
 	default:
 		return nil, fmt.Errorf("unhandled type '%s'", di.ContentType)
 	}
@@ -605,6 +607,15 @@ func processContentModel(contentType, input string) (output Content, err error) 
 		}
 
 		return &tc, nil
+	case "SN|File":
+		var fc FileContent
+		if err = json.Unmarshal([]byte(input), &fc); err != nil {
+			err = fmt.Errorf("processContentModel | %w", err)
+
+			return
+		}
+
+		return &fc, nil
 	case "SN|Privileges":
 		var pc PrivilegesContent
 		if err = json.Unmarshal([]byte(input), &pc); err != nil {
